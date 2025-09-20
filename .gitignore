@@ -1,11 +1,12 @@
-# Dataset files - too large for Git
+# Dataset files - from Kaggle (not included in repo)
 data_description.txt
 sample_submission.csv
 test.csv
 train.csv
 
-# Model files (if any)
-*.pkl
+# Model files (generated during training)
+best_model.pkl
+preprocessing.pkl
 *.pth
 *.h5
 

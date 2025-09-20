@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HousePriceAI - Smart Home Valuation</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1173d4",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              display: ["Space Grotesk"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              lg: "1rem",
+              xl: "1.5rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+<style>
+      body {
+        font-family: "Space Grotesk", sans-serif;
+      }
+      .glassy-effect {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .dark .glassy-effect {
+        background: rgba(16, 25, 34, 0.5);
+      }
+      .loading {
+        display: none;
+      }
+      .loading.active {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s ease-in-out infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white/90">
+<div class="relative min-h-screen w-full">
+<div class="absolute top-0 left-0 w-full h-full overflow-hidden">
+<div class="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-primary/20 dark:bg-primary/30 blur-3xl animate-[spin_20s_linear_infinite]"></div>
+<div class="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-primary/20 dark:bg-primary/30 blur-3xl animate-[spin_25s_linear_infinite_reverse]"></div>
+</div>
+<div class="relative z-10 flex h-full min-h-screen flex-col">
+<header class="sticky top-0 z-20 glassy-effect">
+<div class="container mx-auto flex items-center justify-between px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 6 L44 16 L24 26 L4 16 L24 6Z" stroke="currentColor" stroke-linejoin="round" stroke-width="3"></path>
+<path d="M4 16 L4 32 L24 42 L44 32 L44 16" stroke="currentColor" stroke-linejoin="round" stroke-width="3"></path>
+<path d="M24 26 L24 42" stroke="currentColor" stroke-linejoin="round" stroke-width="3"></path>
+<path d="M14 21 L34 21" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold text-white/90 dark:text-white/90">
+                HousePriceAI
+              </h2>
+</div>
+<nav class="flex items-center gap-4 text-xs font-medium">
+<div class="text-white/70 text-right">
+<p class="font-semibold text-white/90">Developer: Chanikya</p>
+<p class="hidden sm:block">📧 karrichanikya@gmail.com</p>
+<p class="hidden sm:block">📱 9182789929</p>
+<p class="text-white/60 italic">🎓 Learning Project</p>
+</div>
+</nav>
+</div>
+</header>
+<main class="flex-1 flex items-center justify-center py-12 px-4">
+<div class="w-full max-w-4xl space-y-8 p-8 md:p-10 rounded-xl glassy-effect">
+<div>
+<h2 class="text-center text-3xl font-bold text-white/90">
+                Predict Your Home's Value
+              </h2>
+<p class="mt-2 text-center text-sm text-white/60">
+                Enter the details below to get an AI-powered price estimation based on advanced machine learning.
+              </p>
+              <p class="mt-1 text-center text-xs text-white/50 italic">
+                🎓 This is a learning purpose project by Chanikya
+              </p>
+</div>
+<form id="housePredictionForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Basic Information -->
+<div class="col-span-full">
+<h3 class="text-lg font-semibold text-white/80 mb-4 border-b border-white/10 pb-2">Basic Information</h3>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="overallQual">Overall Quality (1-10)</label>
+<select class="form-select mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="overallQual" required>
+<option value="">Select quality</option>
+<option value="1">1 - Very Poor</option>
+<option value="2">2 - Poor</option>
+<option value="3">3 - Fair</option>
+<option value="4">4 - Below Average</option>
+<option value="5">5 - Average</option>
+<option value="6">6 - Above Average</option>
+<option value="7">7 - Good</option>
+<option value="8">8 - Very Good</option>
+<option value="9">9 - Excellent</option>
+<option value="10">10 - Very Excellent</option>
+</select>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="yearBuilt">Year Built</label>
+<input class="form-input mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="yearBuilt" placeholder="e.g., 2000" type="number" min="1800" max="2025" required/>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="grLivArea">Above Grade Living Area (sq ft)</label>
+<input class="form-input mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="grLivArea" placeholder="e.g., 1800" type="number" min="300" required/>
+</div>
+
+<!-- House Features -->
+<div class="col-span-full">
+<h3 class="text-lg font-semibold text-white/80 mb-4 border-b border-white/10 pb-2 mt-6">House Features</h3>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="bedroomAbvGr">Bedrooms Above Grade</label>
+<select class="form-select mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="bedroomAbvGr" required>
+<option value="">Select bedrooms</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5+</option>
+</select>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="fullBath">Full Bathrooms</label>
+<select class="form-select mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="fullBath" required>
+<option value="">Select bathrooms</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4+</option>
+</select>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="totRmsAbvGrd">Total Rooms Above Grade</label>
+<select class="form-select mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="totRmsAbvGrd" required>
+<option value="">Select rooms</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10+</option>
+</select>
+</div>
+
+<!-- Property Details -->
+<div class="col-span-full">
+<h3 class="text-lg font-semibold text-white/80 mb-4 border-b border-white/10 pb-2 mt-6">Property Details</h3>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="lotArea">Lot Size (sq ft)</label>
+<input class="form-input mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="lotArea" placeholder="e.g., 8450" type="number" min="1000" required/>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="neighborhood">Neighborhood</label>
+<select class="form-select mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="neighborhood" required>
+<option value="">Select neighborhood</option>
+<option value="Blmngtn">Bloomington Heights</option>
+<option value="Blueste">Bluestem</option>
+<option value="BrDale">Briardale</option>
+<option value="BrkSide">Brookside</option>
+<option value="ClearCr">Clear Creek</option>
+<option value="CollgCr">College Creek</option>
+<option value="Crawfor">Crawford</option>
+<option value="Edwards">Edwards</option>
+<option value="Gilbert">Gilbert</option>
+<option value="IDOTRR">Iowa DOT and Rail Road</option>
+<option value="MeadowV">Meadow Village</option>
+<option value="Mitchel">Mitchell</option>
+<option value="Names">North Ames</option>
+<option value="NoRidge">Northridge</option>
+<option value="NPkVill">Northpark Villa</option>
+<option value="NridgHt">Northridge Heights</option>
+<option value="NWAmes">Northwest Ames</option>
+<option value="OldTown">Old Town</option>
+<option value="SWISU">South & West of Iowa State University</option>
+<option value="Sawyer">Sawyer</option>
+<option value="SawyerW">Sawyer West</option>
+<option value="Somerst">Somerset</option>
+<option value="StoneBr">Stone Brook</option>
+<option value="Timber">Timberland</option>
+<option value="Veenker">Veenker</option>
+</select>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="houseStyle">House Style</label>
+<select class="form-select mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="houseStyle" required>
+<option value="">Select style</option>
+<option value="1Story">1 Story</option>
+<option value="1.5Fin">1.5 Story Finished</option>
+<option value="1.5Unf">1.5 Story Unfinished</option>
+<option value="2Story">2 Story</option>
+<option value="2.5Fin">2.5 Story Finished</option>
+<option value="2.5Unf">2.5 Story Unfinished</option>
+<option value="SFoyer">Split Foyer</option>
+<option value="SLvl">Split Level</option>
+</select>
+</div>
+
+<!-- Garage & Additional Features -->
+<div class="col-span-full">
+<h3 class="text-lg font-semibold text-white/80 mb-4 border-b border-white/10 pb-2 mt-6">Garage & Additional Features</h3>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="garageCars">Garage Size (Cars)</label>
+<select class="form-select mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="garageCars" required>
+<option value="">Select garage size</option>
+<option value="0">No Garage</option>
+<option value="1">1 Car</option>
+<option value="2">2 Cars</option>
+<option value="3">3 Cars</option>
+<option value="4">4+ Cars</option>
+</select>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="fireplaces">Fireplaces</label>
+<select class="form-select mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="fireplaces" required>
+<option value="">Select fireplaces</option>
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3+</option>
+</select>
+</div>
+
+<div>
+<label class="text-sm font-medium text-white/70" for="centralAir">Central Air Conditioning</label>
+<select class="form-select mt-2 flex w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-primary focus:ring-primary focus:ring-opacity-50 transition-all" id="centralAir" required>
+<option value="">Select option</option>
+<option value="Y">Yes</option>
+<option value="N">No</option>
+</select>
+</div>
+
+<div class="col-span-full mt-8">
+<button type="submit" class="w-full flex items-center justify-center rounded-lg h-12 px-6 bg-primary text-white text-base font-bold shadow-lg shadow-primary/40 hover:bg-opacity-90 transition-all transform hover:scale-105">
+<span class="loading" id="loadingSpinner"></span>
+<span id="buttonText">Predict Price</span>
+</button>
+</div>
+</form>
+
+<div id="resultSection" class="text-center pt-4" style="display: none;">
+<h3 class="text-lg font-medium text-white/70">
+                Predicted Price
+              </h3>
+<p id="predictedPrice" class="text-4xl lg:text-5xl font-bold text-white mt-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-primary/80">
+                $0
+              </p>
+<div id="priceRange" class="mt-4 text-sm text-white/60">
+<p>Estimated range based on model confidence</p>
+</div>
+</div>
+
+<div id="errorSection" class="text-center pt-4" style="display: none;">
+<div class="bg-red-500/20 border border-red-500/50 rounded-lg p-4">
+<h3 class="text-lg font-medium text-red-400">
+                Prediction Error
+              </h3>
+<p id="errorMessage" class="text-sm text-red-300 mt-2">
+                Something went wrong. Please try again.
+              </p>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+
+<script>
+document.getElementById('housePredictionForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const button = document.querySelector('button[type="submit"]');
+    const buttonText = document.getElementById('buttonText');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const resultSection = document.getElementById('resultSection');
+    const errorSection = document.getElementById('errorSection');
+    
+    // Show loading state
+    button.disabled = true;
+    buttonText.textContent = 'Predicting...';
+    loadingSpinner.classList.add('active');
+    resultSection.style.display = 'none';
+    errorSection.style.display = 'none';
+    
+    // Collect form data
+    const formData = {
+        OverallQual: parseInt(document.getElementById('overallQual').value),
+        YearBuilt: parseInt(document.getElementById('yearBuilt').value),
+        GrLivArea: parseInt(document.getElementById('grLivArea').value),
+        BedroomAbvGr: parseInt(document.getElementById('bedroomAbvGr').value),
+        FullBath: parseInt(document.getElementById('fullBath').value),
+        TotRmsAbvGrd: parseInt(document.getElementById('totRmsAbvGrd').value),
+        LotArea: parseInt(document.getElementById('lotArea').value),
+        Neighborhood: document.getElementById('neighborhood').value,
+        HouseStyle: document.getElementById('houseStyle').value,
+        GarageCars: parseInt(document.getElementById('garageCars').value),
+        Fireplaces: parseInt(document.getElementById('fireplaces').value),
+        CentralAir: document.getElementById('centralAir').value
+    };
+    
+    try {
+        // Make API call to backend
+        const response = await fetch('/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (!response.ok) {
+            throw new Error('Prediction failed');
+        }
+        
+        const result = await response.json();
+        
+        // Display result
+        document.getElementById('predictedPrice').textContent = 
+            new Intl.NumberFormat('en-US', { 
+                style: 'currency', 
+                currency: 'USD',
+                maximumFractionDigits: 0
+            }).format(result.prediction);
+        
+        // Show confidence range if available
+        if (result.confidence_range) {
+            document.getElementById('priceRange').innerHTML = `
+                <p class="text-white/60">Estimated range: ${new Intl.NumberFormat('en-US', { 
+                    style: 'currency', 
+                    currency: 'USD',
+                    maximumFractionDigits: 0
+                }).format(result.confidence_range.min)} - ${new Intl.NumberFormat('en-US', { 
+                    style: 'currency', 
+                    currency: 'USD',
+                    maximumFractionDigits: 0
+                }).format(result.confidence_range.max)}</p>
+            `;
+        }
+        
+        resultSection.style.display = 'block';
+        
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('errorMessage').textContent = 
+            'Unable to predict house price. Please check your inputs and try again.';
+        errorSection.style.display = 'block';
+    } finally {
+        // Reset button state
+        button.disabled = false;
+        buttonText.textContent = 'Predict Price';
+        loadingSpinner.classList.remove('active');
+    }
+});
+
+// Form validation and auto-calculation for total rooms
+document.getElementById('bedroomAbvGr').addEventListener('change', function() {
+    const bedrooms = parseInt(this.value);
+    const bathrooms = parseInt(document.getElementById('fullBath').value) || 0;
+    const currentRooms = parseInt(document.getElementById('totRmsAbvGrd').value) || 0;
+    
+    // Auto-suggest minimum rooms based on bedrooms and bathrooms
+    const minRooms = bedrooms + bathrooms + 2; // +2 for kitchen and living room
+    if (currentRooms < minRooms) {
+        document.getElementById('totRmsAbvGrd').value = minRooms;
+    }
+});
+
+document.getElementById('fullBath').addEventListener('change', function() {
+    const bathrooms = parseInt(this.value);
+    const bedrooms = parseInt(document.getElementById('bedroomAbvGr').value) || 0;
+    const currentRooms = parseInt(document.getElementById('totRmsAbvGrd').value) || 0;
+    
+    // Auto-suggest minimum rooms based on bedrooms and bathrooms
+    const minRooms = bedrooms + bathrooms + 2; // +2 for kitchen and living room
+    if (currentRooms < minRooms) {
+        document.getElementById('totRmsAbvGrd').value = minRooms;
+    }
+});
+</script>
+
+</body></html>
