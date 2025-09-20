@@ -1,0 +1,32 @@
+# Dataset files - from Kaggle (not included in repo)
+data_description.txt
+sample_submission.csv
+test.csv
+train.csv
+
+# Model files (generated during training)
+best_model.pkl
+preprocessing.pkl
+*.pth
+*.h5
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+env/
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

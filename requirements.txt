@@ -7,3 +7,5 @@ xgboost
 lightgbm
 joblib
 jupyter
+flask
+flask-cors
