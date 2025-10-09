@@ -4,7 +4,7 @@ A modern, production-ready **house price prediction web application** built with
 
 ## 🌟 Live Demo
 
-**🔗 Live App:** https://houseprice-ai-xxxx.onrender.com
+**🔗 Live App:** [https://houseprice-ai-xxxx.onrender.com](https://house-price-prediction-dhlh.onrender.com)
 
 Try it now! Enter house details and get instant price predictions.
 
