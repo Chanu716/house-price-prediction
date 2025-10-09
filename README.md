@@ -4,6 +4,10 @@ A modern, production-ready **house price prediction web application** built with
 
 ## 🌟 Live Demo
 
+**🔗 Live App:** https://houseprice-ai-xxxx.onrender.com
+
+Try it now! Enter house details and get instant price predictions.
+
 ![Status](https://img.shields.io/badge/Status-Live-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.8+-blue)
 ![Flask](https://img.shields.io/badge/Flask-2.x-green)
