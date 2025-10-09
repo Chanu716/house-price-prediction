@@ -1,14 +1,16 @@
-# Dataset files - from Kaggle (not included in repo)
-data_description.txt
-sample_submission.csv
-test.csv
-train.csv
+# Dataset files - from Kaggle (available in repo for reference)
+# Uncomment these if you want to exclude large data files:
+# data_description.txt
+# sample_submission.csv
+# test.csv
+# train.csv
 
-# Model files (generated during training)
-best_model.pkl
-preprocessing.pkl
-*.pth
-*.h5
+# Model files (include trained models for deployment)
+# *.pth
+# *.h5
+# But keep the trained model:
+# !best_model.pkl
+# !preprocessing.pkl
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
